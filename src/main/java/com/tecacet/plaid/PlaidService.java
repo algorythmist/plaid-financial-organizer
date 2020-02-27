@@ -12,6 +12,7 @@ import com.plaid.client.request.common.Product;
 import com.plaid.client.response.Account;
 import com.plaid.client.response.AccountsBalanceGetResponse;
 import com.plaid.client.response.CategoriesGetResponse;
+import com.plaid.client.response.Institution;
 import com.plaid.client.response.InstitutionsGetByIdResponse;
 import com.plaid.client.response.ItemPublicTokenExchangeResponse;
 import com.plaid.client.response.SandboxPublicTokenCreateResponse;
@@ -35,8 +36,15 @@ public class PlaidService {
         this.plaidTokenService = plaidTokenService;
     }
 
-    public Response<InstitutionsGetByIdResponse> getInstitution(String institutionId) throws IOException {
-        return plaidApiService.institutionsGetById(new InstitutionsGetByIdRequest(institutionId)).execute();
+//    First Platypus Bank 	ins_109508
+//    First Gingham Credit Union 	ins_109509
+//    Tattersall Federal Credit Union 	ins_109510
+//    Tartan Bank 	ins_109511
+//    Houndstooth Bank 	ins_109512
+//    Tartan-Dominion Bank of Canada 	ins_43
+    public Institution getInstitution(String institutionId) throws IOException {
+        return plaidApiService.institutionsGetById(new InstitutionsGetByIdRequest(institutionId))
+                .execute().body().getInstitution();
     }
 
     public List<Account> getAccounts(String institutionId) throws IOException {
