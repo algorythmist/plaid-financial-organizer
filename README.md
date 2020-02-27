@@ -2,7 +2,7 @@
 
 1. Set the following environment variables:
 - PLAID_CLIENT_ID
-- PLAID_CLIENT_SECRET
+- PLAID_SECRET
 - PLAID_PUBLIC_KEY
 
 2. Run Main

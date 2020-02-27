@@ -1,4 +1,4 @@
-package com.tecacet.plaid;
+package com.tecacet.plaid.export;
 
 import com.plaid.client.response.Account;
 import com.plaid.client.response.TransactionsGetResponse;
@@ -14,7 +14,6 @@ public class TransactionExporter {
 
     private static final String[] HEADER = {"Date", "Amount",  "Description", "Categories", "Type", "Account"};
     private static final String[] PROPERTIES = {"date", "amount",  "name", "category", "transactionType", "accountId"};
-
 
     public void exportTransactions(TransactionsGetResponse transactionsGetResponse, String filename) throws IOException {
         Map<String, Account> accounts = transactionsGetResponse.getAccounts().stream()
