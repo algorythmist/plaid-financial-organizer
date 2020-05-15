@@ -5,8 +5,6 @@ import com.plaid.client.response.*;
 import com.tecacet.plaid.export.CategoryExporter;
 import com.tecacet.plaid.export.TransactionExporter;
 
-import retrofit2.Response;
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
