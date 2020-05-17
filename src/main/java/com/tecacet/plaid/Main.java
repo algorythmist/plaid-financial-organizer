@@ -5,8 +5,6 @@ import com.plaid.client.response.*;
 import com.tecacet.plaid.export.CategoryExporter;
 import com.tecacet.plaid.export.TransactionExporter;
 
-import retrofit2.Response;
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -23,9 +21,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Response<InstitutionsGetByIdResponse> institutionResponse =
-                plaidService.getInstitution("ins_3");
-        Institution institution = institutionResponse.body().getInstitution();
+        Institution institution = plaidService.getInstitution("ins_109509");
+        System.out.println(institution);
         String institutionId = institution.getInstitutionId();
 
         Calendar calendar = new GregorianCalendar(2019, Calendar.APRIL, 1);
@@ -34,7 +31,7 @@ public class Main {
         List<Account> institutionAccounts = plaidService.getAccounts(institutionId);
         // System.out.println(institutionAccounts);
 
-        transactionExporter.exportTransactions(transactionsGetResponse, "txn.csv");
+        transactionExporter.exportTransactions(transactionsGetResponse);
 
         List<CategoriesGetResponse.Category> categories = plaidService.getAllCategories();
         categoryExporter.exportCategories(categories, "categories.csv");

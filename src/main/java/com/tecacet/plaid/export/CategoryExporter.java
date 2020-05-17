@@ -3,8 +3,6 @@ package com.tecacet.plaid.export;
 import com.plaid.client.response.CategoriesGetResponse;
 import com.tecacet.jflat.CSVWriter;
 
-import org.apache.commons.csv.CSVFormat;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -16,7 +14,6 @@ public class CategoryExporter {
     public void exportCategories(List<CategoriesGetResponse.Category> categories, String filename) throws IOException {
 
         CSVWriter writer = CSVWriter.createForProperties(PROPERTIES)
-                //.withFormat(CSVFormat.RFC4180.withQuote('"'))
                 .withHeader(HEADER);
         writer.writeToFile(filename, categories);
     }
