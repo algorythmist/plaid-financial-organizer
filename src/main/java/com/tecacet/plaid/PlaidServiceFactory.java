@@ -3,30 +3,16 @@ package com.tecacet.plaid;
 import com.plaid.client.PlaidApiService;
 import com.plaid.client.PlaidClient;
 
-import okhttp3.ConnectionPool;
-
-import java.util.concurrent.TimeUnit;
 
 public class PlaidServiceFactory {
 
-    private static int poolSize = 1;
-    private static int connectionIdle = 1;
-    private static String plaidUrl = "https://sandbox.plaid.com";
+    public static PlaidApiService buildPlaidApiService(SecretRegistry secretRegistry) {
+        String clientId = secretRegistry.clientId();
+        String clientSecret = secretRegistry.clientSecret();
 
-    public static PlaidApiService buildPlaidApiService() {
-        String clientId = System.getenv("PLAID_CLIENT_ID");
-        String clientSecret = System.getenv("PLAID_SECRET");
-        String publicKey = System.getenv("PLAID_PUBLIC_KEY");
-
-        PlaidClient.Builder builder = PlaidClient.newBuilder();
-        builder.okHttpClientBuilder()
-                .connectionPool(new ConnectionPool(
-                        poolSize,
-                        connectionIdle, TimeUnit.MILLISECONDS));
-        PlaidClient plaidClient = builder
+        PlaidClient plaidClient = PlaidClient.newBuilder()
                 .clientIdAndSecret(clientId, clientSecret)
-                .publicKey(publicKey)
-                .baseUrl(plaidUrl)
+                .sandboxBaseUrl()
                 .build();
         return plaidClient.service();
     }

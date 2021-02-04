@@ -10,12 +10,14 @@ import com.plaid.client.response.Account;
 import com.plaid.client.response.AccountsBalanceGetResponse;
 import com.plaid.client.response.CategoriesGetResponse;
 import com.plaid.client.response.Institution;
+import com.plaid.client.response.InstitutionsGetByIdResponse;
 import com.plaid.client.response.InstitutionsSearchResponse;
 import com.plaid.client.response.TransactionsGetResponse;
 
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -29,10 +31,6 @@ public class PlaidService {
         this.plaidTokenService = plaidTokenService;
     }
 
-    public InstitutionsSearchResponse searchInstitutions(String query) throws IOException {
-        return plaidApiService.institutionsSearch(new InstitutionsSearchRequest(query)).execute().body();
-    }
-
     //    First Platypus Bank 	ins_109508
     //    First Gingham Credit Union 	ins_109509
     //    Tattersall Federal Credit Union 	ins_109510
@@ -40,8 +38,12 @@ public class PlaidService {
     //    Houndstooth Bank 	ins_109512
     //    Tartan-Dominion Bank of Canada 	ins_43
     public Institution getInstitution(String institutionId) throws IOException {
-        return plaidApiService.institutionsGetById(new InstitutionsGetByIdRequest(institutionId))
-                .execute().body().getInstitution();
+        InstitutionsGetByIdRequest req = new InstitutionsGetByIdRequest(institutionId,
+                Arrays.asList("USA"));
+        Response<InstitutionsGetByIdResponse> response = plaidApiService.institutionsGetById(req)
+                .execute();
+
+        return response.body().getInstitution();
     }
 
     public List<Account> getAccounts(String institutionId) throws IOException {

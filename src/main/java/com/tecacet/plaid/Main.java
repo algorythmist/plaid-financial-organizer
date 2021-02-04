@@ -12,7 +12,8 @@ import java.util.List;
 
 public class Main {
 
-    private static PlaidApiService plaidApiService = PlaidServiceFactory.buildPlaidApiService();
+    private static PlaidApiService plaidApiService =
+            PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretRegistry());
     private static PlaidTokenService plaidTokenService = new PlaidTokenService(plaidApiService);
     private static PlaidService plaidService = new PlaidService(plaidApiService, plaidTokenService);
 
@@ -22,14 +23,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         Institution institution = plaidService.getInstitution("ins_109509");
-        System.out.println(institution);
+        System.out.println(institution.getName());
         String institutionId = institution.getInstitutionId();
 
         Calendar calendar = new GregorianCalendar(2019, Calendar.APRIL, 1);
         TransactionsGetResponse transactionsGetResponse = plaidService.getTransactions(institutionId, calendar.getTime());
 
         List<Account> institutionAccounts = plaidService.getAccounts(institutionId);
-        // System.out.println(institutionAccounts);
 
         transactionExporter.exportTransactions(transactionsGetResponse);
 

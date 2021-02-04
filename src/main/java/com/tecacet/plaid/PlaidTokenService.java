@@ -6,6 +6,8 @@ import com.plaid.client.request.SandboxPublicTokenCreateRequest;
 import com.plaid.client.request.common.Product;
 import com.plaid.client.response.ItemPublicTokenExchangeResponse;
 
+import retrofit2.Response;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +29,17 @@ public class PlaidTokenService {
 
     public String exchangeToken(String publicToken) throws IOException {
         ItemPublicTokenExchangeRequest exchangeRequest = new ItemPublicTokenExchangeRequest(publicToken);
-        ItemPublicTokenExchangeResponse exchangeResponse = plaidApiService.itemPublicTokenExchange(exchangeRequest).execute().body();
+        Response<ItemPublicTokenExchangeResponse> execution = plaidApiService.itemPublicTokenExchange(exchangeRequest).execute();
+        if (!execution.isSuccessful()) {
+            System.out.println(execution.errorBody());
+            throw new IOException(execution.message());
+        }
+        ItemPublicTokenExchangeResponse exchangeResponse = execution.body();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return exchangeResponse.getAccessToken();
     }
 
