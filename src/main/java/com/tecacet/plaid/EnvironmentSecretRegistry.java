@@ -1,5 +1,10 @@
 package com.tecacet.plaid;
 
+/**
+ * Retrieve Plaid credentials from environment variables.
+ * PLAID_CLIENT_ID: client_id
+ * PLAID_SECRET: secret
+ */
 public class EnvironmentSecretRegistry implements SecretRegistry {
 
     @Override

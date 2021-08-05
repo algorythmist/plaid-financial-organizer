@@ -31,20 +31,6 @@ public class PlaidService {
         this.plaidTokenService = plaidTokenService;
     }
 
-    //    First Platypus Bank 	ins_109508
-    //    First Gingham Credit Union 	ins_109509
-    //    Tattersall Federal Credit Union 	ins_109510
-    //    Tartan Bank 	ins_109511
-    //    Houndstooth Bank 	ins_109512
-    //    Tartan-Dominion Bank of Canada 	ins_43
-    public Institution getInstitution(String institutionId) throws IOException {
-        InstitutionsGetByIdRequest req = new InstitutionsGetByIdRequest(institutionId,
-                Arrays.asList("USA"));
-        Response<InstitutionsGetByIdResponse> response = plaidApiService.institutionsGetById(req)
-                .execute();
-
-        return response.body().getInstitution();
-    }
 
     public List<Account> getAccounts(String institutionId) throws IOException {
         String accessToken = plaidTokenService.getPublicToken(institutionId);

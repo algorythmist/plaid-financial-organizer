@@ -16,13 +16,14 @@ public class Main {
             PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretRegistry());
     private static PlaidTokenService plaidTokenService = new PlaidTokenService(plaidApiService);
     private static PlaidService plaidService = new PlaidService(plaidApiService, plaidTokenService);
+    private static PlaidInstitutionService institutionService = new PlaidInstitutionService(plaidApiService);
 
     private static TransactionExporter transactionExporter = new TransactionExporter();
     private static CategoryExporter categoryExporter = new CategoryExporter();
 
     public static void main(String[] args) throws IOException {
 
-        Institution institution = plaidService.getInstitution("ins_109509");
+        Institution institution = institutionService.getInstitution("ins_109509");
         System.out.println(institution.getName());
         String institutionId = institution.getInstitutionId();
 
