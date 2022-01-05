@@ -13,7 +13,7 @@ public class CategoryExporter {
 
     public void exportCategories(List<CategoriesGetResponse.Category> categories, String filename) throws IOException {
 
-        CSVWriter writer = CSVWriter.createForProperties(PROPERTIES)
+        CSVWriter writer = CSVWriter.writerForProperties(PROPERTIES)
                 .withHeader(HEADER);
         writer.writeToFile(filename, categories);
     }

@@ -19,7 +19,7 @@ public class TransactionExporter {
         Map<String, Account> accounts = transactionsGetResponse.getAccounts().stream()
                 .collect(Collectors.toMap(Account::getAccountId, Function.identity()));
         String filename = transactionsGetResponse.getItem().getInstitutionId() +".csv";
-        CSVWriter writer = CSVWriter.createForProperties( PROPERTIES ).withFormat(CSVFormat.RFC4180.withQuote('"'))
+        CSVWriter writer = CSVWriter.writerForProperties( PROPERTIES ).withFormat(CSVFormat.RFC4180.withQuote('"'))
             .withHeader( HEADER );
         writer.registerConverterForProperty( "accountId", accountId -> {
             Account account = accounts.get( accountId );
