@@ -1,15 +1,17 @@
 package com.tecacet.plaid;
 
-import com.plaid.client.PlaidApiService;
-import com.plaid.client.request.ItemPublicTokenExchangeRequest;
-import com.plaid.client.request.SandboxPublicTokenCreateRequest;
-import com.plaid.client.request.common.Product;
-import com.plaid.client.response.ItemPublicTokenExchangeResponse;
+
+import com.plaid.client.model.ItemPublicTokenExchangeRequest;
+import com.plaid.client.model.ItemPublicTokenExchangeResponse;
+import com.plaid.client.model.Products;
+import com.plaid.client.model.SandboxPublicTokenCreateRequest;
+import com.plaid.client.request.PlaidApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PlaidTokenService extends AbstractPlaidService {
@@ -18,17 +20,20 @@ public class PlaidTokenService extends AbstractPlaidService {
     //TODO: interface
     private final Map<String, String> tokenDatabase = new HashMap<>();
 
-    public PlaidTokenService(PlaidApiService plaidApiService) {
+    public PlaidTokenService(PlaidApi plaidApiService) {
         super(plaidApiService);
     }
 
     public String createSandboxPublicToken(String institutionId) {
-        return invoke(plaidApiService.sandboxPublicTokenCreate(new SandboxPublicTokenCreateRequest(institutionId,
-                Arrays.asList(Product.TRANSACTIONS)))).getPublicToken();
+        SandboxPublicTokenCreateRequest createRequest = new SandboxPublicTokenCreateRequest();
+        createRequest.setInstitutionId(institutionId);
+        createRequest.setInitialProducts(List.of(Products.TRANSACTIONS));
+        return invoke(plaidApiService.sandboxPublicTokenCreate(createRequest)).getPublicToken();
     }
 
     public String exchangeToken(String publicToken) {
-        ItemPublicTokenExchangeRequest exchangeRequest = new ItemPublicTokenExchangeRequest(publicToken);
+        ItemPublicTokenExchangeRequest exchangeRequest = new ItemPublicTokenExchangeRequest();
+        exchangeRequest.setPublicToken(publicToken);
         ItemPublicTokenExchangeResponse exchangeResponse =
                 invoke(plaidApiService.itemPublicTokenExchange(exchangeRequest));
         try {

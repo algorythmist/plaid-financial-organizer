@@ -1,7 +1,8 @@
 package com.tecacet.plaid;
 
 
-import com.plaid.client.response.Institution;
+import com.plaid.client.model.CountryCode;
+import com.plaid.client.model.Institution;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -30,7 +31,7 @@ class PlaidInstitutionServiceTest {
     void getInstitutions() {
         PlaidInstitutionService institutionService = new PlaidInstitutionService();
         List<Institution> institutions =
-                institutionService.getInstitutions(Collections.singletonList("US"), 100, 1);
+                institutionService.getInstitutions(Collections.singletonList(CountryCode.US), 100, 1);
         System.out.println(institutions);
     }
 }

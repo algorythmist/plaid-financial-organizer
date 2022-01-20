@@ -1,7 +1,9 @@
 package com.tecacet.plaid;
 
-import com.plaid.client.PlaidApiService;
-import com.plaid.client.PlaidClient;
+import com.plaid.client.ApiClient;
+import com.plaid.client.request.PlaidApi;
+
+import java.util.HashMap;
 
 //TODO: singleton
 public class PlaidServiceFactory {
@@ -10,17 +12,18 @@ public class PlaidServiceFactory {
 
     }
 
-    public static PlaidApiService buildPlaidApiService(SecretRegistry secretRegistry) {
+    public static PlaidApi buildPlaidApiService(SecretRegistry secretRegistry) {
         String clientId = secretRegistry.clientId();
         String clientSecret = secretRegistry.clientSecret();
         if (clientId == null || clientSecret == null) {
             throw new PlaidException("Failed to obtain credentials from registry.");
         }
 
-        PlaidClient plaidClient = PlaidClient.newBuilder()
-                .clientIdAndSecret(clientId, clientSecret)
-                .sandboxBaseUrl()
-                .build();
-        return plaidClient.service();
+        HashMap<String, String> apiKeys = new HashMap<>();
+        apiKeys.put("clientId", clientId);
+        apiKeys.put("secret", clientSecret);
+        ApiClient apiClient = new ApiClient(apiKeys);
+        apiClient.setPlaidAdapter(ApiClient.Sandbox);
+        return apiClient.createService(PlaidApi.class);
     }
 }

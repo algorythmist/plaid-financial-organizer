@@ -1,25 +1,29 @@
 package com.tecacet.plaid;
 
-import com.plaid.client.PlaidApiService;
-import com.plaid.client.response.*;
+
+import com.plaid.client.model.AccountBase;
+import com.plaid.client.model.Category;
+import com.plaid.client.model.Institution;
+import com.plaid.client.model.TransactionsGetResponse;
+import com.plaid.client.request.PlaidApi;
 import com.tecacet.plaid.export.CategoryExporter;
 import com.tecacet.plaid.export.TransactionExporter;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Main {
 
-    private static PlaidApiService plaidApiService =
+    private static final PlaidApi plaidApiService =
             PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretRegistry());
-    private static PlaidTokenService plaidTokenService = new PlaidTokenService(plaidApiService);
-    private static PlaidService plaidService = new PlaidService(plaidApiService, plaidTokenService);
-    private static PlaidInstitutionService institutionService = new PlaidInstitutionService(plaidApiService);
+    private static final PlaidTokenService plaidTokenService = new PlaidTokenService(plaidApiService);
+    private static final PlaidService plaidService = new PlaidService(plaidApiService, plaidTokenService);
+    private static final PlaidInstitutionService institutionService = new PlaidInstitutionService(plaidApiService);
 
-    private static TransactionExporter transactionExporter = new TransactionExporter();
-    private static CategoryExporter categoryExporter = new CategoryExporter();
+    private static final TransactionExporter transactionExporter = new TransactionExporter();
+    private static final CategoryExporter categoryExporter = new CategoryExporter();
 
     public static void main(String[] args) throws IOException {
 
@@ -27,14 +31,14 @@ public class Main {
         System.out.println(institution.getName());
         String institutionId = institution.getInstitutionId();
 
-        Calendar calendar = new GregorianCalendar(2019, Calendar.APRIL, 1);
-        TransactionsGetResponse transactionsGetResponse = plaidService.getTransactions(institutionId, calendar.getTime());
+        LocalDate date = LocalDate.of(2019, Calendar.APRIL, 1);
+        TransactionsGetResponse transactionsGetResponse = plaidService.getTransactions(institutionId, date);
 
-        List<Account> institutionAccounts = plaidService.getAccounts(institutionId);
+        List<AccountBase> institutionAccounts = plaidService.getAccounts(institutionId);
 
         transactionExporter.exportTransactions(transactionsGetResponse);
 
-        List<CategoriesGetResponse.Category> categories = plaidService.getAllCategories();
+        List<Category> categories = plaidService.getAllCategories();
         categoryExporter.exportCategories(categories, "categories.csv");
     }
 }

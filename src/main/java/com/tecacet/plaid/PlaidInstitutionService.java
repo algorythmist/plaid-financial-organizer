@@ -1,11 +1,7 @@
 package com.tecacet.plaid;
 
-import com.plaid.client.PlaidApiService;
-import com.plaid.client.request.InstitutionsGetByIdRequest;
-import com.plaid.client.request.InstitutionsGetRequest;
-import com.plaid.client.response.Institution;
-import com.plaid.client.response.InstitutionsGetByIdResponse;
-import com.plaid.client.response.InstitutionsGetResponse;
+import com.plaid.client.model.*;
+import com.plaid.client.request.PlaidApi;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -16,7 +12,7 @@ public class PlaidInstitutionService extends  AbstractPlaidService {
 
     public PlaidInstitutionService(){super();}
 
-    public PlaidInstitutionService(PlaidApiService plaidApiService) {
+    public PlaidInstitutionService(PlaidApi plaidApiService) {
         super(plaidApiService);
     }
 
@@ -27,8 +23,9 @@ public class PlaidInstitutionService extends  AbstractPlaidService {
     //    Houndstooth Bank 	ins_109512
     //    Tartan-Dominion Bank of Canada 	ins_43
     public Institution getInstitution(String institutionId)  {
-        InstitutionsGetByIdRequest req = new InstitutionsGetByIdRequest(institutionId,
-                Collections.singletonList("USA"));
+        InstitutionsGetByIdRequest req = new InstitutionsGetByIdRequest();
+        req.setInstitutionId(institutionId);
+        req.setCountryCodes(Collections.singletonList(CountryCode.US));
         Response<InstitutionsGetByIdResponse> response;
         try {
             response = plaidApiService.institutionsGetById(req).execute();
@@ -39,10 +36,13 @@ public class PlaidInstitutionService extends  AbstractPlaidService {
 
     }
 
-    public List<Institution> getInstitutions(List<String> countryCodes, int count, int offset)  {
+    public List<Institution> getInstitutions(List<CountryCode> countryCodes, int count, int offset)  {
         try {
-            Response<InstitutionsGetResponse> response = plaidApiService
-                    .institutionsGet(new InstitutionsGetRequest(count, offset, countryCodes)).execute();
+            InstitutionsGetRequest getRequest = new InstitutionsGetRequest();
+            getRequest.setCountryCodes(countryCodes);
+            getRequest.setCount(count);
+            getRequest.setOffset(offset);
+            Response<InstitutionsGetResponse> response = plaidApiService.institutionsGet(getRequest).execute();
             return extractBody(response).getInstitutions();
         } catch (IOException e) {
             throw new PlaidException(e);
