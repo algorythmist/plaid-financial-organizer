@@ -4,10 +4,7 @@ import com.plaid.client.PlaidApiService;
 import com.plaid.client.response.Account;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PlaidAccountServiceTest {
 
