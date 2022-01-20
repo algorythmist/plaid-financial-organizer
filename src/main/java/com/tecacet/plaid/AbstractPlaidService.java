@@ -1,6 +1,7 @@
 package com.tecacet.plaid;
 
-import com.plaid.client.PlaidApiService;
+
+import com.plaid.client.request.PlaidApi;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -8,13 +9,13 @@ import java.io.IOException;
 
 public abstract class AbstractPlaidService {
 
-    protected final PlaidApiService plaidApiService;
+    protected final PlaidApi plaidApiService;
 
     protected AbstractPlaidService() {
         this(PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretRegistry()));
     }
 
-    protected AbstractPlaidService(PlaidApiService plaidApiService) {
+    protected AbstractPlaidService(PlaidApi plaidApiService) {
         this.plaidApiService = plaidApiService;
     }
 

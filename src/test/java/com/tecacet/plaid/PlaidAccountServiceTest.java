@@ -1,7 +1,8 @@
 package com.tecacet.plaid;
 
-import com.plaid.client.PlaidApiService;
-import com.plaid.client.response.Account;
+
+import com.plaid.client.model.AccountBase;
+import com.plaid.client.request.PlaidApi;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,11 +11,11 @@ class PlaidAccountServiceTest {
 
     @Test
     void getAccounts() {
-        PlaidApiService plaidApiService =
+        PlaidApi plaidApiService =
                 PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretRegistry());
         PlaidTokenService plaidTokenService = new PlaidTokenService(plaidApiService);
         PlaidAccountService accountService = new PlaidAccountService(plaidApiService, plaidTokenService);
-        List<Account> accounts = accountService.getAccounts("ins_109509");
+        List<AccountBase> accounts = accountService.getAccounts("ins_109509");
         System.out.println(accounts);
     }
 }
