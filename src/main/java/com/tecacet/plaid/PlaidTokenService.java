@@ -6,22 +6,21 @@ import com.plaid.client.model.ItemPublicTokenExchangeResponse;
 import com.plaid.client.model.Products;
 import com.plaid.client.model.SandboxPublicTokenCreateRequest;
 import com.plaid.client.request.PlaidApi;
+import com.tecacet.plaid.data.TokenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PlaidTokenService extends AbstractPlaidService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    //TODO: interface
-    private final Map<String, String> tokenDatabase = new HashMap<>();
 
-    public PlaidTokenService(PlaidApi plaidApiService) {
+    private final TokenRepository tokenRepository;
+
+    public PlaidTokenService(PlaidApi plaidApiService, TokenRepository tokenRepository) {
         super(plaidApiService);
+        this.tokenRepository = tokenRepository;
     }
 
     public String createSandboxPublicToken(String institutionId) {
@@ -46,12 +45,12 @@ public class PlaidTokenService extends AbstractPlaidService {
     }
 
     public String getPublicToken(String institutionId) {
-        String accessToken = tokenDatabase.get(institutionId);
+        String accessToken = tokenRepository.getToken(institutionId);
         if (accessToken == null) {
             logger.info("Token not stored. Obtaining a token from sandbox");
             String publicToken = createSandboxPublicToken(institutionId);
             accessToken = exchangeToken(publicToken);
-            tokenDatabase.put(publicToken, accessToken);
+            tokenRepository.storeToken(publicToken, accessToken);
         }
         return accessToken;
     }
