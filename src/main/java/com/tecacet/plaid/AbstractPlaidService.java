@@ -2,6 +2,7 @@ package com.tecacet.plaid;
 
 
 import com.plaid.client.request.PlaidApi;
+import com.tecacet.plaid.data.EnvironmentSecretsRepository;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -12,7 +13,7 @@ public abstract class AbstractPlaidService {
     protected final PlaidApi plaidApiService;
 
     protected AbstractPlaidService() {
-        this(PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretRegistry()));
+        this(PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretsRepository()));
     }
 
     protected AbstractPlaidService(PlaidApi plaidApiService) {

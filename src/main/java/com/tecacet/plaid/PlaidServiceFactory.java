@@ -2,6 +2,7 @@ package com.tecacet.plaid;
 
 import com.plaid.client.ApiClient;
 import com.plaid.client.request.PlaidApi;
+import com.tecacet.plaid.data.SecretsRepository;
 
 import java.util.HashMap;
 
@@ -12,7 +13,7 @@ public class PlaidServiceFactory {
 
     }
 
-    public static PlaidApi buildPlaidApiService(SecretRegistry secretRegistry) {
+    public static PlaidApi buildPlaidApiService(SecretsRepository secretRegistry) {
         String clientId = secretRegistry.clientId();
         String clientSecret = secretRegistry.clientSecret();
         if (clientId == null || clientSecret == null) {
