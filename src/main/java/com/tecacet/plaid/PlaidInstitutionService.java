@@ -28,7 +28,7 @@ public class PlaidInstitutionService extends  AbstractPlaidService {
         req.setCountryCodes(Collections.singletonList(CountryCode.US));
         Response<InstitutionsGetByIdResponse> response;
         try {
-            response = plaidApiService.institutionsGetById(req).execute();
+            response = plaidApi.institutionsGetById(req).execute();
             return extractBody(response).getInstitution();
         } catch (IOException e) {
             throw new PlaidException(e);
@@ -42,7 +42,7 @@ public class PlaidInstitutionService extends  AbstractPlaidService {
             getRequest.setCountryCodes(countryCodes);
             getRequest.setCount(count);
             getRequest.setOffset(offset);
-            Response<InstitutionsGetResponse> response = plaidApiService.institutionsGet(getRequest).execute();
+            Response<InstitutionsGetResponse> response = plaidApi.institutionsGet(getRequest).execute();
             return extractBody(response).getInstitutions();
         } catch (IOException e) {
             throw new PlaidException(e);

@@ -18,8 +18,8 @@ public class PlaidTokenService extends AbstractPlaidService {
 
     private final TokenRepository tokenRepository;
 
-    public PlaidTokenService(PlaidApi plaidApiService, TokenRepository tokenRepository) {
-        super(plaidApiService);
+    public PlaidTokenService(PlaidApi plaidApi, TokenRepository tokenRepository) {
+        super(plaidApi);
         this.tokenRepository = tokenRepository;
     }
 
@@ -27,14 +27,14 @@ public class PlaidTokenService extends AbstractPlaidService {
         SandboxPublicTokenCreateRequest createRequest = new SandboxPublicTokenCreateRequest();
         createRequest.setInstitutionId(institutionId);
         createRequest.setInitialProducts(List.of(Products.TRANSACTIONS));
-        return invoke(plaidApiService.sandboxPublicTokenCreate(createRequest)).getPublicToken();
+        return invoke(plaidApi.sandboxPublicTokenCreate(createRequest)).getPublicToken();
     }
 
     public String exchangeToken(String publicToken) {
         ItemPublicTokenExchangeRequest exchangeRequest = new ItemPublicTokenExchangeRequest();
         exchangeRequest.setPublicToken(publicToken);
         ItemPublicTokenExchangeResponse exchangeResponse =
-                invoke(plaidApiService.itemPublicTokenExchange(exchangeRequest));
+                invoke(plaidApi.itemPublicTokenExchange(exchangeRequest));
         try {
             logger.info("Waiting for access token...");
             Thread.sleep(500);

@@ -11,8 +11,8 @@ public class PlaidAccountService extends AbstractPlaidService {
 
     private final PlaidTokenService plaidTokenService;
 
-    public PlaidAccountService(PlaidApi plaidApiService, PlaidTokenService plaidTokenService) {
-        super(plaidApiService);
+    public PlaidAccountService(PlaidApi plaidApi, PlaidTokenService plaidTokenService) {
+        super(plaidApi);
         this.plaidTokenService = plaidTokenService;
     }
 
@@ -20,7 +20,7 @@ public class PlaidAccountService extends AbstractPlaidService {
         String accessToken = plaidTokenService.getPublicToken(institutionId);
         AccountsBalanceGetRequest request = new AccountsBalanceGetRequest();
         request.setAccessToken(accessToken);
-        return invoke(plaidApiService.accountsBalanceGet(request)).getAccounts();
+        return invoke(plaidApi.accountsBalanceGet(request)).getAccounts();
     }
 
 }

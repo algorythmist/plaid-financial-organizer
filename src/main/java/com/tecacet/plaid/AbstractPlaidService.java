@@ -10,14 +10,14 @@ import java.io.IOException;
 
 public abstract class AbstractPlaidService {
 
-    protected final PlaidApi plaidApiService;
+    protected final PlaidApi plaidApi;
 
     protected AbstractPlaidService() {
         this(PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretsRepository()));
     }
 
-    protected AbstractPlaidService(PlaidApi plaidApiService) {
-        this.plaidApiService = plaidApiService;
+    protected AbstractPlaidService(PlaidApi plaidApi) {
+        this.plaidApi = plaidApi;
     }
 
     protected <T> T invoke(Call<T> call) {
