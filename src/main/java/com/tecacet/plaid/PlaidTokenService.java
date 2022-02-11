@@ -1,6 +1,5 @@
 package com.tecacet.plaid;
 
-
 import com.plaid.client.model.ItemPublicTokenExchangeRequest;
 import com.plaid.client.model.ItemPublicTokenExchangeResponse;
 import com.plaid.client.model.Products;
@@ -35,12 +34,6 @@ public class PlaidTokenService extends AbstractPlaidService {
         exchangeRequest.setPublicToken(publicToken);
         ItemPublicTokenExchangeResponse exchangeResponse =
                 invoke(plaidApi.itemPublicTokenExchange(exchangeRequest));
-        try {
-            logger.info("Waiting for access token...");
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return exchangeResponse.getAccessToken();
     }
 
