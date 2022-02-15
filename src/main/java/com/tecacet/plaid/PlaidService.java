@@ -3,7 +3,7 @@ package com.tecacet.plaid;
 import com.plaid.client.model.*;
 
 import com.plaid.client.request.PlaidApi;
-import okhttp3.Request;
+
 import retrofit2.Response;
 
 
@@ -13,11 +13,11 @@ import java.util.List;
 
 public class PlaidService {
 
-    private final PlaidApi plaidApiService;
+    private final PlaidApi plaidApi;
     private final PlaidTokenService plaidTokenService;
 
-    public PlaidService(PlaidApi plaidApiService, PlaidTokenService plaidTokenService) {
-        this.plaidApiService = plaidApiService;
+    public PlaidService(PlaidApi plaidApi, PlaidTokenService plaidTokenService) {
+        this.plaidApi = plaidApi;
         this.plaidTokenService = plaidTokenService;
     }
 
@@ -26,7 +26,7 @@ public class PlaidService {
         String accessToken = plaidTokenService.getPublicToken(institutionId);
         AccountsBalanceGetRequest request = new AccountsBalanceGetRequest();
         request.setAccessToken(accessToken);
-        Response<AccountsGetResponse> response = plaidApiService.accountsBalanceGet(request).execute();
+        Response<AccountsGetResponse> response = plaidApi.accountsBalanceGet(request).execute();
         return response.body().getAccounts();
     }
 
@@ -36,11 +36,11 @@ public class PlaidService {
         request.setAccessToken(accessToken);
         request.setStartDate(fromDate);
         request.setEndDate(LocalDate.now());
-        return plaidApiService.transactionsGet(request).execute().body();
+        return plaidApi.transactionsGet(request).execute().body();
     }
 
     public List<Category> getAllCategories() throws IOException {
-        return plaidApiService.categoriesGet(new Object()).execute().body().getCategories();
+        return plaidApi.categoriesGet(new Object()).execute().body().getCategories();
     }
 
 }
