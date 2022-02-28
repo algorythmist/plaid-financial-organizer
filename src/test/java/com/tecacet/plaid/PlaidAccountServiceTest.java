@@ -8,6 +8,7 @@ import com.tecacet.plaid.data.MemoryTokenRepository;
 import com.tecacet.plaid.data.TokenRepository;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 class PlaidAccountServiceTest {
@@ -19,7 +20,7 @@ class PlaidAccountServiceTest {
                 PlaidServiceFactory.buildPlaidApiService(new EnvironmentSecretsRepository());
         PlaidTokenService plaidTokenService = new PlaidTokenService(plaidApiService, tokenRepository);
         PlaidAccountService accountService = new PlaidAccountService(plaidApiService, plaidTokenService);
-        List<AccountBase> accounts = accountService.getAccounts("ins_109509");
+        List<AccountBase> accounts = accountService.getAccounts("ins_109509", Collections.emptyList());
         System.out.println(accounts);
     }
 }

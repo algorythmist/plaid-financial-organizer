@@ -3,6 +3,8 @@ package com.tecacet.plaid;
 
 import com.plaid.client.model.AccountBase;
 import com.plaid.client.model.AccountsBalanceGetRequest;
+import com.plaid.client.model.AccountsGetRequest;
+import com.plaid.client.model.AccountsGetRequestOptions;
 import com.plaid.client.request.PlaidApi;
 
 import java.util.List;
@@ -16,11 +18,16 @@ public class PlaidAccountService extends AbstractPlaidService {
         this.plaidTokenService = plaidTokenService;
     }
 
-    public List<AccountBase> getAccounts(String institutionId) {
+    public List<AccountBase> getAccounts(String institutionId, List<String> optionalAccountIds) {
         String accessToken = plaidTokenService.getPublicToken(institutionId);
-        AccountsBalanceGetRequest request = new AccountsBalanceGetRequest();
+        AccountsGetRequest request = new AccountsGetRequest();
         request.setAccessToken(accessToken);
-        return invoke(plaidApi.accountsBalanceGet(request)).getAccounts();
+        if (!optionalAccountIds.isEmpty()) {
+            AccountsGetRequestOptions options = new AccountsGetRequestOptions();
+            options.accountIds(optionalAccountIds);
+            request.setOptions(options);
+        }
+        return invoke(plaidApi.accountsGet(request)).getAccounts();
     }
 
 }
