@@ -3,6 +3,7 @@ package com.tecacet.plaid;
 
 import com.google.gson.Gson;
 import com.plaid.client.model.Error;
+import com.plaid.client.model.PlaidError;
 import com.plaid.client.request.PlaidApi;
 import com.tecacet.plaid.data.EnvironmentSecretsRepository;
 import retrofit2.Call;
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 public abstract class AbstractPlaidService {
 
+    private final Gson gson = new Gson();
     protected final PlaidApi plaidApi;
 
     protected AbstractPlaidService() {
@@ -39,11 +41,15 @@ public abstract class AbstractPlaidService {
         if (response.isSuccessful()) {
             return response.body();
         }
-        throw new PlaidException(response.raw().toString());
+        throw new PlaidException(extractError(response));
     }
 
-    protected Error extractError(Response response) throws IOException {
-        Gson gson = new Gson();
-        return gson.fromJson(response.errorBody().string(), Error.class);
+    protected PlaidError extractError(Response response) {
+
+        try {
+            return gson.fromJson(response.errorBody().string(), PlaidError.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
