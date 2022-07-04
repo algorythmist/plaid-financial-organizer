@@ -4,6 +4,7 @@ import com.plaid.client.model.PlaidError;
 
 public class PlaidException extends RuntimeException {
 
+
     public PlaidException(String message) {
         super(message);
     }
