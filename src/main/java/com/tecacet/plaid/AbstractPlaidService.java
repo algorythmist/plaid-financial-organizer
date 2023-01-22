@@ -2,7 +2,6 @@ package com.tecacet.plaid;
 
 
 import com.google.gson.Gson;
-import com.plaid.client.model.Error;
 import com.plaid.client.model.PlaidError;
 import com.plaid.client.request.PlaidApi;
 import com.tecacet.plaid.data.EnvironmentSecretsRepository;
